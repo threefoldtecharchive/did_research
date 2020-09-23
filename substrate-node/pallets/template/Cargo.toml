@@ -29,7 +29,13 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc6'
 version = '2.0.0-rc6'
 
-[dev-dependencies.sp-core]
+[dependencies.sp-std]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc6'
+version = '2.0.0-rc6'
+
+[dependencies.sp-core]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc6'
@@ -53,4 +59,5 @@ std = [
     'codec/std',
     'frame-support/std',
     'frame-system/std',
+	'sp-std/std',
 ]
