@@ -19,8 +19,8 @@ mod tests;
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Encode, Decode, Default, RuntimeDebug)]
 pub struct KycObject {
-    provider: Vec<u8>,
-    proof: [u8; 32],
+    pub provider: Vec<u8>,
+    pub proof: [u8; 32],
 }
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
