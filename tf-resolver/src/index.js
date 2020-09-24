@@ -1,6 +1,5 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api')
 
-
 // build the DID Document
 async function buildDocument(did, address) {
     // Construct
