@@ -1,7 +1,7 @@
 const yargs = require('yargs');
 const { ApiPromise, WsProvider, Keyring } = require('@polkadot/api');
 const { exit } = require('yargs');
-const { Vec } = require('@polkadot/types')
+const { Vec, Bytes } = require('@polkadot/types')
 
 const argv = yargs
     .command('submit', 'Submit a proof to the blockchain', {
@@ -32,10 +32,13 @@ if (argv._.includes('submit')) {
     ApiPromise.create({ 
         provider: wsProvider,
         types: {
-            KycObject: {
-              provider: 'Vec<u8>',
-              proof: '[u8; 32]'
-            }
+            //KycObject: {
+            //  provider: 'Vec<u8>',
+            //  proof: '[u8; 32]'
+            //}
+			// override custom 
+			Address: 'AccountId',
+			LookupSource: 'AccountId'
           }
     })
     .then(api => {
@@ -46,15 +49,21 @@ if (argv._.includes('submit')) {
 
         // Add an account, straight mnemonic
         const test = keyring.addFromUri(PHRASE);
+		const ALICE = keyring.addFromUri('//Alice', { name: 'Alice default' });
 
         let utf8Encode = new TextEncoder();
 
+		// let provider = new Bytes(api.registry, utf8Encode.encode('google'));
+		// console.log(provider);
+
         // const ob = api.createType('KycObject', utf8Encode.encode(argv.k), utf8Encode.encode(argv.p))
         // console.log(ob)
+		let hash = utf8Encode.encode('FTY7sU89H9pVlFgIU8u6l2Fe9lMkmuca');
+		console.log(hash)
 
         api.tx.templateModule
-            .addKycProof('0x123', utf8Encode.encode('FTY7sU89H9pVlFgIU8u6l2Fe9lMkmuca'))
-            .signAndSend(test)
+            .addKycProof("0x123456", hash)
+            .signAndSend(ALICE)
             .then(res => {
                 console.log(res)
                 console.log('successfull')
