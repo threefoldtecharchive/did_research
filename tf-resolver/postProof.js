@@ -5,11 +5,6 @@ const { Vec, Bytes } = require('@polkadot/types')
 
 const argv = yargs
     .command('submit', 'Submit a proof to the blockchain', {
-        address: {
-            description: 'Address to store proof on',
-            alias: 'a',
-            type: 'string',
-        },
         provider: {
             description: 'Kyc Provider url',
             alias: 'k',
@@ -26,16 +21,16 @@ const argv = yargs
     .argv;
 
 if (argv._.includes('submit')) {
-    if (argv.a === '' || argv.p === '' || argv.k === '') console.log('Bad params')
+    if (argv.p === '' || argv.k === '') console.log('Bad params')
 
     const wsProvider = new WsProvider('ws://localhost:9944')
     ApiPromise.create({ 
         provider: wsProvider,
         types: {
-            //KycObject: {
-            //  provider: 'Vec<u8>',
-            //  proof: '[u8; 32]'
-            //}
+            KycObject: {
+             provider: 'Vec<u8>',
+             proof: 'Vec<u8>'
+            },
 			// override custom 
 			Address: 'AccountId',
 			LookupSource: 'AccountId'
@@ -43,34 +38,20 @@ if (argv._.includes('submit')) {
     })
     .then(api => {
         const keyring = new Keyring({ type: 'sr25519' })
-
-        // Some mnemonic phrase
-        const PHRASE = 'blur sphere engine click enact output erode adult system miracle fly salad'
-
-        // Add an account, straight mnemonic
-        const test = keyring.addFromUri(PHRASE);
-		const ALICE = keyring.addFromUri('//Alice', { name: 'Alice default' });
-
-        let utf8Encode = new TextEncoder();
-
-		// let provider = new Bytes(api.registry, utf8Encode.encode('google'));
-		// console.log(provider);
-
-        // const ob = api.createType('KycObject', utf8Encode.encode(argv.k), utf8Encode.encode(argv.p))
-        // console.log(ob)
-		let hash = utf8Encode.encode('FTY7sU89H9pVlFgIU8u6l2Fe9lMkmuca');
-		console.log(hash)
+        const BOB = keyring.addFromUri('//Bob', { name: 'Bob default' })
 
         api.tx.templateModule
-            .addKycProof("0x123456", hash)
-            .signAndSend(ALICE)
+            .addKycProof(argv.k, argv.p)
+            .signAndSend(BOB)
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 console.log('successfull')
+                wsProvider.disconnect()
                 exit(1)
             })
             .catch(err => {
                 console.log(err)
+                wsProvider.disconnect()
                 exit(1)
             })
     })

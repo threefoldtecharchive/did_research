@@ -2,7 +2,7 @@ export default {
 	types: {
 		KycObject: {
 			provider: 'Bytes',
-			proof: 'H256'
+			proof: 'Bytes'
 		}
 	}
 }

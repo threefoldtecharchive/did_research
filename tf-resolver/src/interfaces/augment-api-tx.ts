@@ -2,7 +2,7 @@
 /* eslint-disable */
 
 import { AnyNumber } from '@polkadot/types/types';
-import { Compact, Option, U8aFixed, Vec } from '@polkadot/types/codec';
+import { Compact, Option, Vec } from '@polkadot/types/codec';
 import { Bytes, u32, u64 } from '@polkadot/types/primitive';
 import { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
 import { GrandpaEquivocationProof, KeyOwnerProof } from '@polkadot/types/interfaces/grandpa';
@@ -290,7 +290,7 @@ declare module '@polkadot/api/types/submittable' {
       /**
        * Allows a user to add a Kyc proof to his did
        **/
-      addKycProof: AugmentedSubmittable<(provider: Bytes | string | Uint8Array, proof: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      addKycProof: AugmentedSubmittable<(provider: Bytes | string | Uint8Array, proof: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
     };
     timestamp: {
       /**

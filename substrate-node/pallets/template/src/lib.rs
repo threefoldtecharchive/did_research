@@ -20,7 +20,7 @@ mod tests;
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Encode, Decode, Default, RuntimeDebug)]
 pub struct KycObject {
     pub provider: Vec<u8>,
-    pub proof: [u8; 32],
+    pub proof: Vec<u8>,
 }
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
@@ -76,12 +76,8 @@ decl_module! {
 
         /// Allows a user to add a Kyc proof to his did
         #[weight = 10_000 + T::DbWeight::get().reads_writes(1,1)]
-        pub fn add_kyc_proof(origin, provider: Vec<u8>, proof: [u8;32]) -> dispatch::DispatchResult {
+        pub fn add_kyc_proof(origin, provider: Vec<u8>, proof: Vec<u8>) -> dispatch::DispatchResult {
             let who = ensure_signed(origin)?;
-
-
-
-            ensure!(provider.len() <= 32, Error::<T>::ProviderTooLong);
 
             let existing_kyc_objs = KycAttrs::<T>::get(&who);
 

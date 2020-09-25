@@ -1,7 +1,11 @@
 <template>
-  <div id="app">
+  <v-app>
+    <v-app-bar app color="secondary" dark elevation="0">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
+    </v-app-bar>
     <router-view />
-  </div>
+  </v-app>
 </template>
 
 <style>

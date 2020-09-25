@@ -5,6 +5,7 @@ import hashlib_wrapper
 
 from configparser import ConfigParser
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 config = ConfigParser()
 config.read("config.ini")
@@ -14,7 +15,7 @@ signing_key = nacl_wrapper.get_signing_key(seed)
 key = nacl_wrapper.get_key(seed)
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route("/", methods=["GET"])
 def index():

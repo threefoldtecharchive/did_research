@@ -9,7 +9,7 @@ async function buildDocument(did, address) {
         types: {
             KycObject: {
               provider: 'Vec<u8>',
-              proof: '[u8; 32]'
+              proof: 'Vec<u8>'
             }
           }
     })

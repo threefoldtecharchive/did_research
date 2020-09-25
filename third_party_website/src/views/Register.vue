@@ -1,27 +1,55 @@
 <template>
-  <div class="home">
-    <h2>Register</h2>
-    <p>
-      Note: The password is just purely for the POC, in reality the app is going
-      to sign the object containing the DID to verify it is the user sending the
-      data.
-    </p>
-    <p>
-      <label for="did">did </label>
-      <input id="did" v-model="did" type="text" name="did" />
-    </p>
+  <v-app id="inspire">
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
+            <v-card class="elevation-12">
+              <v-toolbar
+                flat
+              >
+                <v-toolbar-title>Register using your DID</v-toolbar-title>
+                <v-spacer />
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    label="Login"
+                    name="login"
+                    type="text"
+                    v-model="did"
+                  />
 
-    <p>
-      <label for="password">password </label>
-      <input id="password" v-model="password" type="password" name="password" />
-    </p>
-
-    <p>
-      <input type="submit" value="Submit" @click="register" />
-    </p>
-  </div>
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    v-model="password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn  v-on:click="this.register" color="primary">Register</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
-
 <script>
 import axios from "axios";
 
@@ -37,7 +65,8 @@ export default {
     register() {
       console.log("Resolving did: ", this.did);
 
-      axios.get("http://127.0.0.1:5000/did/" + this.did).then(response => {
+      const DID_RESOLVER_SERVICE = "http://localhost:3000/"
+      axios.get(DID_RESOLVER_SERVICE + this.did).then(response => {
         if (response.status !== 200) {
           console.log("Failed to resolve did.");
           localStorage.removeItem("kyc");
@@ -57,7 +86,7 @@ export default {
         // This can be accomplished with asking the service or asking for their public key and verifying the sign urself.
         console.log("Validating if KYC proof is signed by given provider");
 
-        axios.get(provider + proof).then(response => {
+        axios.get(`${provider}/${proof}`).then(response => {
           if (response.status !== 200) {
             console.log(
               "Failed to validate KYC proof with the given provider."

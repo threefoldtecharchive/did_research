@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const port = 3000
 const threefoldResolver = require('./src/index')
+const cors = require('cors')
+
+app.use(cors())
 
 app.get('/:did', (req, res) => {
   threefoldResolver(req.params.did)
