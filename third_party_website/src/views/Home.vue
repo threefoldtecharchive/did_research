@@ -2,13 +2,14 @@
   <div class="home">
     <h2>Home</h2>
 
-    <div v-if="isKyced">
-      <p>Welcome: {{ this.kycInfo }}</p>
+    <div v-if="kycInfo">
       <p>
         You are currently <b>logged in</b>. Click
         <a href="#" @click="logout">here</a> to logout!.
       </p>
-      <h3>Website content here!</h3>
+      <h3>Personal data: </h3>
+       <vue-json-pretty :data="kycInfo" />
+        <a @click="logout">Logout</a>
     </div>
     <div v-else>
       <p>
@@ -20,24 +21,26 @@
 </template>
 
 <script>
+import VueJsonPretty from 'vue-json-pretty'
 export default {
   name: "Home",
   data: () => {
     return {
-      isKyced: false,
       kycInfo: null
     };
   },
+  components: {
+    VueJsonPretty
+  },
   mounted() {
     if (localStorage.getItem("kyc")) {
-      this.isKyced = true;
-      this.kycInfo = JSON.parse(localStorage.getItem("kyc"))["first_name"];
+      this.kycInfo = JSON.parse(localStorage.getItem("kyc"))
     }
   },
   methods: {
     logout() {
-      this.isKyced = false;
-      localStorage.removeItem("kyc");
+      localStorage.removeItem("kyc")
+      this.$router.push('/register')
     }
   }
 };
