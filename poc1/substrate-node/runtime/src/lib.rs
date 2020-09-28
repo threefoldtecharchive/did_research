@@ -44,7 +44,7 @@ pub use sp_runtime::{Perbill, Permill};
 /// Import the template pallet.
 pub use template;
 
-// pub use pallet_did;
+pub use pallet_did;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -267,12 +267,11 @@ impl template::Trait for Runtime {
     type Event = Event;
 }
 
-// add the following code block
-// impl pallet_did::Trait for Runtime {
-// 	type Event = Event;
-// 	type Public = MultiSigner;
-// 	type Signature = Signature;
-// }
+impl pallet_did::Trait for Runtime {
+	type Event = Event;
+	type Public = MultiSigner;
+	type Signature = Signature;
+}
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
@@ -291,7 +290,7 @@ construct_runtime!(
         Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
         // Include the custom logic from the template pallet in the runtime.
         TemplateModule: template::{Module, Call, Storage, Event<T>},
-        // PalletDID: pallet_did::{Module, Call, Storage, Event<T>},
+        PalletDID: pallet_did::{Module, Call, Storage, Event<T>},
     }
 );
 

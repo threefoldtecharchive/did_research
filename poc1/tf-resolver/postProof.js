@@ -38,11 +38,11 @@ if (argv._.includes('submit')) {
     })
     .then(api => {
         const keyring = new Keyring({ type: 'sr25519' })
-        const BOB = keyring.addFromUri('//Bob', { name: 'Bob default' })
+        const ALICE = keyring.addFromUri('//Alice', { name: 'Alice default' })
 
         api.tx.templateModule
             .addKycProof(argv.k, argv.p)
-            .signAndSend(BOB)
+            .signAndSend(ALICE)
             .then(res => {
                 // console.log(res)
                 console.log('successfull')

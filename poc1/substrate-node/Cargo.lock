@@ -3310,6 +3310,7 @@ dependencies = [
  "frame-system-rpc-runtime-api",
  "pallet-aura",
  "pallet-balances",
+ "pallet-did",
  "pallet-grandpa",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
