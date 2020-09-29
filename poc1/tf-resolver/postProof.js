@@ -27,9 +27,9 @@ if (argv._.includes('submit')) {
     ApiPromise.create({ 
         provider: wsProvider,
         types: {
-            KycObject: {
-             provider: 'Vec<u8>',
-             proof: 'Vec<u8>'
+            Attribute: {
+             name: 'Vec<u8>',
+             value: 'Vec<u8>'
             },
 			// override custom 
 			Address: 'AccountId',
@@ -41,7 +41,7 @@ if (argv._.includes('submit')) {
         const ALICE = keyring.addFromUri('//Alice', { name: 'Alice default' })
 
         api.tx.templateModule
-            .addKycProof(argv.k, argv.p)
+            .addAttribute(ALICE.address, argv.k, argv.p)
             .signAndSend(ALICE)
             .then(res => {
                 // console.log(res)

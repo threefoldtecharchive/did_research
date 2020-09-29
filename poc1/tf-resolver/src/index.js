@@ -7,9 +7,9 @@ async function buildDocument(did, address) {
     const api = await ApiPromise.create({ 
         provider: wsProvider,
         types: {
-            KycObject: {
-              provider: 'Vec<u8>',
-              proof: 'Vec<u8>'
+            Attribute: {
+              name: 'Vec<u8>',
+              value: 'Vec<u8>'
             }
           }
     })
@@ -20,17 +20,17 @@ async function buildDocument(did, address) {
     }
     
     try {
-        console.log(`trying to retrieve kyc attributes for address: ${address}`)
-        const res = await api.query.templateModule.kycAttrs(address);
+        console.log(`trying to retrieve attributes for address: ${address}`)
+        const res = await api.query.templateModule.attributes(address)
 
         console.log(`got res: ${res}`)
 
         if (res.length > 0) {
             doc.kyc = []
         }
-        res.map(kycAttribute => {
-            const provider = hex_to_ascii(kycAttribute.provider).trim().replace(/\0/g, '')
-            const proof = hex_to_ascii(kycAttribute.proof).trim().replace(/\0/g, '')
+        res.map(attribute => {
+            const provider = hex_to_ascii(attribute.name).trim().replace(/\0/g, '')
+            const proof = hex_to_ascii(attribute.value).trim().replace(/\0/g, '')
             doc.kyc.push({
                 provider,
                 proof

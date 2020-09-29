@@ -5,7 +5,7 @@
 /// https://substrate.dev/docs/en/knowledgebase/runtime/frame
 use codec::{Decode, Encode};
 use frame_support::{
-    decl_error, decl_event, decl_module, decl_storage, dispatch, ensure, traits::Get,
+    decl_error, decl_event, decl_module, decl_storage, dispatch::DispatchResult, ensure, traits::Get,
 };
 use frame_system::ensure_signed;
 use sp_core::RuntimeDebug;
@@ -14,13 +14,11 @@ use sp_std::{prelude::*, vec::Vec};
 #[cfg(test)]
 mod mock;
 
-#[cfg(test)]
-mod tests;
-
+/// Attributes or properties that make an identity.
 #[derive(PartialEq, Eq, PartialOrd, Ord, Clone, Encode, Decode, Default, RuntimeDebug)]
-pub struct KycObject {
-    pub provider: Vec<u8>,
-    pub proof: Vec<u8>,
+pub struct Attribute {
+    pub name: Vec<u8>,
+    pub value: Vec<u8>,
 }
 
 /// Configure the pallet by specifying the parameters and types on which it depends.
@@ -36,7 +34,9 @@ decl_storage! {
     // This name may be updated, but each pallet in the runtime must use a unique name.
     // ---------------------------------vvvvvvvvvvvvvv
     trait Store for Module<T: Trait> as TemplateModule {
-        pub KycAttrs get(fn kyc_attributes): map hasher(blake2_128_concat) T::AccountId => Vec<KycObject>;
+        pub Attributes get(fn attributes_of): map hasher(blake2_128_concat) T::AccountId => Vec<Attribute>;
+        /// Identity owner.
+        pub OwnerOf get(fn owner_of): map hasher(blake2_128_concat) T::AccountId => Option<T::AccountId>;
     }
 }
 
@@ -50,22 +50,18 @@ decl_event!(
         /// A new kyc proof has been added to the did belonging to the account, supplied by the
         /// given provider. [who, provider]
         KycProofAdded(AccountId, Vec<u8>),
+        AttributeAdded(AccountId,Vec<u8>),
     }
 );
 
 // Errors inform users that something went wrong.
 decl_error! {
     pub enum Error for Module<T: Trait> {
-        /// A kyc object from this provider already exists for this user.
-        ProviderExists,
-        /// The provider name exceeds the maximum length.
-        ProviderTooLong,
+        AttributeExists,
+        AttributeCreationFailed,
     }
 }
 
-// Dispatchable functions allows users to interact with the pallet and invoke state changes.
-// These functions materialize as "extrinsics", which are often compared to transactions.
-// Dispatchable functions must be annotated with a weight and must return a DispatchResult.
 decl_module! {
     pub struct Module<T: Trait> for enum Call where origin: T::Origin {
         // Errors must be initialized if they are used by the pallet.
@@ -74,27 +70,43 @@ decl_module! {
         // Events must be initialized if they are used by the pallet.
         fn deposit_event() = default;
 
-        /// Allows a user to add a Kyc proof to his did
+        /// Allows a user to add an attribute to it's account
         #[weight = 10_000 + T::DbWeight::get().reads_writes(1,1)]
-        pub fn add_kyc_proof(origin, provider: Vec<u8>, proof: Vec<u8>) -> dispatch::DispatchResult {
-            let who = ensure_signed(origin)?;
+        pub fn add_attribute(
+            origin,
+            identity: T::AccountId,
+            name: Vec<u8>, 
+            value: Vec<u8>, 
+        ) -> DispatchResult {
+            ensure_signed(origin)?;
+            ensure!(name.len() <= 64, Error::<T>::AttributeCreationFailed);
 
-            let existing_kyc_objs = KycAttrs::<T>::get(&who);
-
-            for obj in existing_kyc_objs {
-                ensure!(obj.provider != provider, Error::<T>::ProviderExists);
-            }
-
-            let new_proof = KycObject {
-                provider,
-                proof,
-            };
-
-            KycAttrs::<T>::mutate(&who, |list| list.push(new_proof.clone()));
-
-            Self::deposit_event(RawEvent::KycProofAdded(who, new_proof.provider));
-
+            Self::create_attribute(&identity, &name, &value)?;
+            Self::deposit_event(RawEvent::AttributeAdded(identity, name));
             Ok(())
         }
+    }
+}
+
+impl<T: Trait> Module<T> {
+    pub fn create_attribute(
+        identity: &T::AccountId,
+        name: &[u8],
+        value: &[u8],
+    ) -> DispatchResult {
+        let existing_kyc_objs = Attributes::<T>::get(&identity);
+
+        for obj in existing_kyc_objs {
+            ensure!(obj.name != name, Error::<T>::AttributeExists);
+        }
+
+        let new_attribute = Attribute {
+            name: (&name).to_vec(),
+            value: (&value).to_vec(),
+        };
+
+        Attributes::<T>::mutate(&identity, |list| list.push(new_attribute.clone()));
+
+        Ok(())
     }
 }
