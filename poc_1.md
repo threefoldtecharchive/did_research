@@ -108,3 +108,33 @@ this.
 Starting a whole new blockchain just to maintain DID's is probably not really a
 good idea. However it might be interesting if we can also get the smart contract
 for IT on there.
+
+### Problems identified in meeting
+
+Running a separate bockchain for DID's will require a currency for users to pay.
+This means a user needs to wallet multiple tokens which is not ideal. While this
+experience can be optimized to some degree, that requires running services on our
+end, which in turn means more effort, and potential problems/abuse.
+
+Data ownership (of private data) will not be absolute. Organizations which need
+KYC'd data, such as banks, could be requested by governments or others to disclose
+the data of a particular customer. The initial idea of not storing the data on
+the service side will thus not work, as it requires an always online data storage.
+Even if there is a threebot and the organization can freely access the users data,
+it would mean that the user engages in a contract with the organization to keep
+his data source forever online, and the organization maintains access. While the
+data technically stays with the user, the effect is that his data (or rather access
+to it) is owned by someone else. The current scenario is thus that once personal
+data is shared, the service should be expected to save it for further usage.
+
+Validation of KYC verification should happen offline if at all possible. It seems
+to be reasonable to assume that some KYC provider might no longer be operational
+at some time in the future. The solution to this would be to have a signed hash
+of the personal data in the DID document. By verifying the signature against the
+public key, we can prove that the provider did verify and sign this originally.
+The data hash allows us to verify that the personal information is indeed what
+was sent to the provider originally. Hashing is somewhat problematic since it
+removes the ability to only disclose part of the verified data. Other solutions
+currently employed seem to use this strategy however, so it should not be considered
+a major issue for now. A possible solution would be a merkle tree, if we know the
+data is well structured.
