@@ -98,6 +98,14 @@ log ins.
 
 As said, all of this is dependant on which KYC provider we will eventually choose.
 
+## POC evaluation
+
+Technology works, few remarks: 
+- Storage was protected by the issuer’s keys. More sense is to have it in the 3Bot of the user who is the subject of the credentials. This way, 
+    - the credentials remain owned by the authentic owner of the data 
+    - It allows him to share the same info (proof of identity, proof of diploma ownership, …) with different relying parties 
+- Question is how to share the data with the relying parties. A consent mechanism should be built in. In the BCDB setup, there is already a ACL mechanism in place, but this should probably be revised to fit with DID document sharing. Could be subject for a second POC. 
+
 ## Notes
 
 Blockchain based DID's do lead to some concerns, since a user needs to pay a small
