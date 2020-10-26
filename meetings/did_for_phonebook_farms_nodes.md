@@ -28,13 +28,17 @@ How to manage the explorer data under form of a DID ?
   - Farms: also stuff managed
   - Nodes
   - 3Bot as Virtual System admin
+  
 Map all entities in explorer to a DID with a mention of subfields that indicate what type it is: ex. It doesn’t make sense to KYC a node. We need to have a minimum set of info to store for every object. 
+
 Farm: limited info needs to be stored, link to nodes and to owners of the farm, creates list of authorised people who can take action on this farm
 Name, owner, location, wallet. Quid price ? If smart contract on-chain ? Currently price is not used. And it might make sense to have price on node level. Other options: Automated attributes : which workloads are allowed on a node (to avoid storage on nodes that have almost no storage available, …)
 On-chain ? Maybe, DID as such is not immutable, link to it is immutable. 
 A node can set farmer ID on a node when it boots, in command line. A node can register itself, create DID when it’s not there and set authorisation to the farmer based on DID.
+
 Nodes info: capacity, but also current status: number of workloads, amount reserved, details for the network
 If We run bcdb on every node: stuff for workloads etc, necessary, if on-chain. If all goes right, node should report the same as it is on-chain. Light info could come directly from the nodes BCDB. 
+
 We need to define a tree so you know where you need to go for which info, possible in BCDB
 
 ### How to access BCDBs ?
@@ -45,6 +49,7 @@ How?
 - Include Substrate Libp2p in BCDB ? Build protocol where bcdb uses libp2p 
 - Yggdrasil used as transport for everything ? Then all out of the box. All in go and all OS’s supported (Linux, Mac, Windows, Android, iOS)
 Problem: now BCDB relies on the explorer to route everything, we should have something more resilient. DHT for this is nice, as long as you don’t store data there. Is also how Yggdrasil does it now too, they chitchat ip’s and public keys of the nodes and discover each other this way. Then they build tree on top of the info they have.  
+
 Conclusion : 
 - BCDB on every node
 - Publish Yggdrasil address in DID to locate the BCDB
@@ -77,4 +82,4 @@ It should be (a) person(s) !
 Farms: 
 - have owner section and rules (“number of owners needed to agree before I change” = multisig structure) 
 - Have admin section
-
+... (to be completed)
