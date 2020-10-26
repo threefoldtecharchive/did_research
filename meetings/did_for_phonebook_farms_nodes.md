@@ -50,8 +50,9 @@ How?
 - Yggdrasil used as transport for everything ? Then all out of the box. All in go and all OS’s supported (Linux, Mac, Windows, Android, iOS)
 Problem: now BCDB relies on the explorer to route everything, we should have something more resilient. DHT for this is nice, as long as you don’t store data there. Is also how Yggdrasil does it now too, they chitchat ip’s and public keys of the nodes and discover each other this way. Then they build tree on top of the info they have.  
 
-Conclusion : 
-- BCDB on every node
+Conclusion : BCDB on every node
+
+How to interconnect? Options we see: 
 - Publish Yggdrasil address in DID to locate the BCDB
 - BCDB can rely on a connection to a substrate node to do the routing (resolve the DID based on sequence number)
 
