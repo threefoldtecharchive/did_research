@@ -80,7 +80,48 @@ Login: goes to chain, checks whether DID = valid one, checks internal database t
 Q: is the farm owned by a person(s) or by sysadmins ? 
 It should be (a) person(s) !
 
-Farms: 
-- have owner section and rules (“number of owners needed to agree before I change” = multisig structure) 
-- Have admin section
-... (to be completed)
+Farms custom sections: 
+- Owner section (all DIDs of who owns) and rules (“number of owners needed to agree before I change” = multisig structure) 
+- Authorisation section
+- Admin section (=same?)
+
+#### Mgmt of farm through sysadmin
+
+List of persons 
+Sysadmin can have people included which are not admins of the farm
+
+Farm has its own DID
+If changes needed to a farm’s DID, we have all info needed to verify so that’s OK
+All is simply signature based verification
+
+When sysadmins do requests to deploy workloads to a farm, how will the nodes verify it ? Public key needs to be attached to sysadmin ID ! Smart contract needs to verify that requester is who he claims he is. 
+
+What we could do with substrate: sysadmin prepares the trx based on data input, flow which goes through 3Bot connect which has DID and private key of you (as a person), receives signed trx in secure way, signs it again, give it back to sysadmin, then posted to the chain. 
+But then you need interaction, which we don’t want, sysadmin does it on your behalf ! 
+=> Use derived keys which can never compromise the person’s keys?
+
+Use different type of keys <> ed25519 as derived keys? Then key derivation, 3Bot connect app generates key pair linked to master key pair and insert into DID of sysadmin. 
+Then sysadmin has own private key derived from key of the person, so it can be recovered. Works but has to be supported explicitly. 
+So it can work but maybe complicated as set-up. To be further investigated. 
+
+Without change to DID document, owner set of the farm can change, =good. We should continue to support farms changing owners. 
+
+Should there be an explicit difference between different DIDs ? From authorisation perspective, no, all is simply signature based. Only what is inside the DID document is different. We could even bring it wider, and even support DID from elsewhere (Ethereum, …). You can have support from other DID providers in sysadmin. Only then different methods to be supported (longer term). 
+
+Depending on what DID represents, attributes might differ, ex. KYC only for persons. But for signing that makes no difference. 
+
+# Conclusion
+
+- We can convert most of what we have today in explorer into did set on-chain
+- Something needs to be done on BCDB
+- Connect BCDBs through yggdrasil ? 
+- Later on: info on node can be found under key x in format y. Explorer front-end can be still used as cache for DIDs which are on-chain and resolves the data inside to fetch BCDB info, becomes a resolver and cache for node info. 
+- Workloads can be converted into smart contract (= what POC did)
+- Directory => DIDs
+
+--- 
+3Bot connect app will have to integrate with DIDs as well, if we move to substrate we can have DID from user’s address ? Depends, only if you want to tie DID address to a single key.
+Substrate balances module (manages things related to funds) could be modified to be tied to DIDs, we could say ‘address which doesn’t belong to a DID could only have limited amount of 50 tokens (and track that over lifetime not to get more than 50 tokens).
+You could have DID 
+
+...
