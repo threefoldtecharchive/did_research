@@ -1,4 +1,4 @@
-# Idea
+## Idea
 
 How to manage the explorer data under form of a DID ?
 - Phonebook
@@ -22,8 +22,10 @@ How to manage the explorer data under form of a DID ?
     - to access the detailed info, use a BCDB service 
   - Is there a use case that we have to tackle when the node is not reachable ? 
     - Minting: what if node is not reachable when data is fetched for calculation of the minting ? Uptime info needs to be on-chain. This could create a big data explosion (storing all heartbeats - nodeID+timestamp+uptime -, currently every 10') => to check
-### Who will have a DID ? 
-  Everyone has a DID:
+
+## Who will have a DID ? 
+  
+Everyone has a DID:
   - Persons
   - Farms: also stuff managed
   - Nodes
@@ -39,7 +41,7 @@ A node can set farmer ID on a node when it boots, in command line. A node can re
 Nodes info: capacity, but also current status: number of workloads, amount reserved, details for the network
 If We run bcdb on every node: stuff for workloads etc, necessary, if on-chain. If all goes right, node should report the same as it is on-chain. Light info could come directly from the nodes BCDB. 
 
-We need to define a tree so you know where you need to go for which info, possible in BCDB
+We need to define a tree so you know where you need to go for which info, possible in BCDB.
 
 ### How to access BCDBs ?
 
@@ -63,7 +65,7 @@ Only reason for BCDBs to talk to each other is replication. But this is probably
 ACLs can also be adapted without issue.
 Now read/write/delete based on 3bot ID, can be changed to DID. You can identify yourself based on the keys in there. As we still use same keys everywhere, not issue.
 
-### 3Bot sysadmin 
+### DID for 3Bot sysadmin ?
 
 Also create a DID for the sysadmin ? Yes, give sysadmin a DID for themselves, will solve a lot of problems: 
 - need to manage also phonebook info on sysadmins representing capacity
@@ -85,7 +87,7 @@ Farms custom sections:
 - Authorisation section
 - Admin section (=same?)
 
-#### Mgmt of farm through sysadmin
+### Management of farm through sysadmin
 
 List of persons 
 Sysadmin can have people included which are not admins of the farm
@@ -110,20 +112,21 @@ Should there be an explicit difference between different DIDs ? From authorisati
 
 Depending on what DID represents, attributes might differ, ex. KYC only for persons. But for signing that makes no difference. 
 
-# Conclusion on DIDs
+## Conclusion on DIDs
 
 - We can convert most of what we have today in explorer into did set on-chain
+- DID on all levels: farml, node, person, sysadmin
 - Something needs to be done on BCDB
 - Connect BCDBs through yggdrasil ? 
 - Later on: info on node can be found under key x in format y. Explorer front-end can be still used as cache for DIDs which are on-chain and resolves the data inside to fetch BCDB info, becomes a resolver and cache for node info. 
 - Workloads can be converted into smart contract (= what POC did)
 - Directory => DIDs
 
-# Threefold Connect
+## Threefold Connect
 
 Threefold Connect app will have to integrate with DIDs as well, if we move to substrate we can have DID from user’s address ? Depends, only if you want to tie DID address to a single key.
 
-# Which DID needs tokens ?
+## Which DID needs tokens ?
 
 Substrate balances module (manages things related to funds) could be modified to be tied to DIDs, we could say ‘address which doesn’t belong to a DID could only have limited amount of 50 tokens, just enough to create transactions (and track that over lifetime not to get more than 50 tokens).
 You could have DID with a list of addresses, people could have more than one address if they search use. If you add your address to DID you can have more than 50 tokens (because we know who you are). We can verify that you own the address because you need to provide a signature from the private key linked to the address, proving that you own the address. Also multi-signature is possible with one of the keys that is already in the DID and one of the keys that belong to the address.
@@ -138,7 +141,7 @@ We can also fund the nodes with tokens once the farmer accepts.
 
 you know the key pair of the node, so you can have public key in your DID as well and you know which nodes belong to you. So in Farm UI you can see list of the nodes. Sysadmin’s wallet can keep the nodes addresses funded, can be automated. 
 
-# How to set up the node and fund with tokens from the farmer ? 
+## How to set up the node and fund with tokens from the farmer ? 
 
 Issue (only to automate, it can work in a manual process): Node needs to have funds to create their own DID. Unless we derive DIDs from addresses, but then we still need to set the farm DID in the node DID, so also funds needed. So: accept node, then fund node and then node can create its own DID ? 
 Boot parameters? Derive key from farmer 3bot
@@ -152,4 +155,4 @@ Alternative options (but probably more complicated):
 VAULT = central component to store keys, and you can give tied access to other parties to read specific keys. So farmer could store private keys in vault, and give permission to the node to read the key through boot parameter? Authorisation in VAULT = through generation of API key that then is used by the node. 
 - give key directly as a boot parameter. Because you can revoke access. Remark then: to check whether there is a limit to passing keys in boot process. 
 
-Issue now: Now, when a node fails, when it reboots, it looses identity and creates a new identity. Farmer could run their own vault instance. 
+Issue: Now, when a node fails, when it reboots, it looses identity and creates a new identity. Farmer could run their own vault instance. 
