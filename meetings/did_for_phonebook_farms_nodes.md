@@ -11,7 +11,7 @@ How to manage the explorer data under form of a DID ?
   Minimal info on-chain: all what is needed to do reservations:   
   - Capacity info (not a lot of data, is scalable)
   - Entire smart contract flow, so we don't need the explorer anymore. 
-- We can the repurpose the explorer so a farmer can specify some explorer where he uploads stuff about his nodes. Explorer url can be be put in DID document on-chain. 
+- We can repurpose the explorer so a farmer can specify some explorer where he uploads stuff about his nodes. Explorer url can be be put in DID document on-chain. 
 - For minting, there is hardware dump, = massive data blob, is not going to scale well when on-chain. To solve this: 
   - Blob to be put separately on explorer service. 
   - Link to this blob in DID document, as well as a hash of the data dump (to prove the validity)
@@ -34,7 +34,11 @@ Everyone has a DID:
 Map all entities in explorer to a DID with a mention of subfields that indicate what type it is: ex. It doesn’t make sense to KYC a node. We need to have a minimum set of info to store for every object. 
 
 Farm: limited info needs to be stored, link to nodes and to owners of the farm, creates list of authorised people who can take action on this farm
-Name, owner, location, wallet. Quid price ? If smart contract on-chain ? Currently price is not used. And it might make sense to have price on node level. Other options: Automated attributes : which workloads are allowed on a node (to avoid storage on nodes that have almost no storage available, …)
+
+Attributes: Name, owner, location, wallet. 
+Quid price ? If smart contract on-chain ? Currently price is not used. And it might make sense to have price on node level. 
+
+Other: Automated attributes : which workloads are allowed on a node (to avoid storage on nodes that have almost no storage available, …)
 On-chain ? Maybe, DID as such is not immutable, link to it is immutable. 
 A node can set farmer ID on a node when it boots, in command line. A node can register itself, create DID when it’s not there and set authorisation to the farmer based on DID.
 
@@ -49,7 +53,7 @@ BCDB needs to be accessible and every node needs to have an accessible BCDB.
 How? 
 - Yggdrasil, DHT enabling ? 
 - Include Substrate Libp2p in BCDB ? Build protocol where bcdb uses libp2p 
-- Yggdrasil used as transport for everything ? Then all out of the box. All in go and all OS’s supported (Linux, Mac, Windows, Android, iOS)
+- Yggdrasil used as transport for everything ? Then yggdrasil can be used fully out of the box. All in go-lang and all OS’s supported (Linux, Mac, Windows, Android, iOS).
 Problem: now BCDB relies on the explorer to route everything, we should have something more resilient. DHT for this is nice, as long as you don’t store data there. Is also how Yggdrasil does it now too, they chitchat ip’s and public keys of the nodes and discover each other this way. Then they build tree on top of the info they have.  
 
 Conclusion : BCDB on every node
@@ -63,7 +67,7 @@ Do we want routing ? Or simply resolve the DID and go directly to there ?
 Only reason for BCDBs to talk to each other is replication. But this is probably not intended to happen like this. 
 
 ACLs can also be adapted without issue.
-Now read/write/delete based on 3bot ID, can be changed to DID. You can identify yourself based on the keys in there. As we still use same keys everywhere, not issue.
+Now read/write/delete based on 3bot ID, can be changed to DID. You can identify yourself based on the keys in there. As we still use same keys everywhere, no issue.
 
 ### DID for 3Bot sysadmin ?
 
@@ -89,12 +93,12 @@ Farms custom sections:
 
 ### Management of farm through sysadmin
 
-List of persons 
+Store list of persons 
 Sysadmin can have people included which are not admins of the farm
 
-Farm has its own DID
-If changes needed to a farm’s DID, we have all info needed to verify so that’s OK
-All is simply signature based verification
+- Farm has its own DID. 
+- If changes needed to a farm’s DID, we have all info needed to verify so that’s OK. 
+- All is simply signature based verification. 
 
 When sysadmins do requests to deploy workloads to a farm, how will the nodes verify it ? Public key needs to be attached to sysadmin ID ! Smart contract needs to verify that requester is who he claims he is. 
 
@@ -128,18 +132,19 @@ Threefold Connect app will have to integrate with DIDs as well, if we move to su
 
 ## Which DID needs tokens ?
 
-Substrate balances module (manages things related to funds) could be modified to be tied to DIDs, we could say ‘address which doesn’t belong to a DID could only have limited amount of 50 tokens, just enough to create transactions (and track that over lifetime not to get more than 50 tokens).
+- Substrate balances module (manages things related to funds) could be modified to be tied to DIDs, we could say ‘address which doesn’t belong to a DID could only have limited amount of 50 tokens, just enough to create transactions (and track that over lifetime not to get more than 50 tokens).
 You could have DID with a list of addresses, people could have more than one address if they search use. If you add your address to DID you can have more than 50 tokens (because we know who you are). We can verify that you own the address because you need to provide a signature from the private key linked to the address, proving that you own the address. Also multi-signature is possible with one of the keys that is already in the DID and one of the keys that belong to the address.
 Needs to be done, people that are KYC proven can use unlimited funds. 
-Nodes, sysadmins and people will need tokens, farms won’t. Alternative is to apply sponsorship (similar to ongoing change with Stellar), substrate is configurable, so we can do this also here. 
-KYC needs to happen with whom ? User and owner of the farm (so both persons).
-Managing trx fees = hard part ? 
+- Nodes, sysadmins and people will need tokens, farms won’t. Alternative is to apply sponsorship (similar to ongoing change with Stellar), substrate is configurable, so we can do this also here. 
+- KYC needs to happen with whom ? User and owner of the farm (so both persons).
+
+- Managing trx fees = hard part ? 
 Sysadmin should be able manage its own wallet, then you can decide who pays for it. 
 So only nodes = problem for trx fees ? Problem ? Right now, one of the issues = if I boot a node with farm_id, then the node is auto part of this farm with farm_id. No way to block that. Farmer to accept node in his farm ? Just a check in 0-OS, data needs to be there on the farm that the farm has accepted yourself. We can do that: we have DID of farm set in the node DID. We just need a permanent verification? 
 “Accept node in farm” call is possible: You have the farm DID so you can resolve the owners, just check that it’s a signature from owners or sysadmins. Even if sysadmin who signs is later removed, no issue (all is logged in history). 
 We can also fund the nodes with tokens once the farmer accepts. 
 
-you know the key pair of the node, so you can have public key in your DID as well and you know which nodes belong to you. So in Farm UI you can see list of the nodes. Sysadmin’s wallet can keep the nodes addresses funded, can be automated. 
+You know the key pair of the node, so you can have public key in your DID as well and you know which nodes belong to you. So in Farm UI you can see list of the nodes. Sysadmin’s wallet can keep the nodes addresses funded, can be automated. 
 
 ## How to set up the node and fund with tokens from the farmer ? 
 
