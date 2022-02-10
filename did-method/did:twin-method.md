@@ -9,7 +9,7 @@
 ``` 
 {
   "@context": "https://www.w3.org/ns/did/v1",
-  "id": "did:twin:123",
+  "id": "did:twin:tfchain-testnet:193",
   "verificationMethod": [{
      "id": "did:twin:123#controller",
      "type": "Secp256k1VerificationKey2018",
@@ -17,7 +17,7 @@
      "SubstrateAddress": "0xb9c5714089478a327f09197987f16f9e5d936e8a"
   }],
   "authentication": [
-     "did:twin:example.com#controller"
+     "did:twin:193#controller"
   ]
 }
 ``` 
