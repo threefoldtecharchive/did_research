@@ -52,11 +52,11 @@ twin-did = "did:twin:" twinID * (":" path)
 Creating a DID is done by:
 
 Applying at a twin for use of the linked IPv6 address as registered on TFChain and storing the location in the digital vault linked to the IPv6 vault address, creating the DID document JSON-LD file including a suitable keypair, and storing the did.json file under the TwinID vault address, or under the specified path if many DIDs will be resolved in this domain.
-For example, for the twinID 123, the did.json will be available under the following URL:
+For example, for the twinID 193 on TFChain testnet, the did.json will be available under the following URL:
 
 EXAMPLE: Creating the DID
-did:twin:123
- -> http://[1080:0:0:0:8:800:200C:417A]/did.json
+did:twin:tfchain-testnet:193
+ -> http://[201:be1b:49ff:b6bc:a715:5af:6e5a:6fd3]/did.json
 
 ### Read (Resolve)
 
