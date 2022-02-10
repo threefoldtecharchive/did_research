@@ -26,15 +26,37 @@
 
 ## Target System
 
+The target system of the Twin DID method is the vault of the Digital Twin, identified as twin on the on the  host that the twinID described by the DID resolves to when queried over the [Planetary Network].
+
 ## Method Name
 
+The namestring that shall identify this DID method is: twin. A DID that uses this method MUST begin with the following prefix: did:twin. Per the DID specification, this string MUST be in lowercase. The remainder of the DID, after the prefix, is specified below.
+
 ## Method-specific identifier
+
+The method specific identifier is a twinID as stored on [TFChain] with an optional path to the DID document.
+
+The method specific identifier MUST match the common name used in the SSL/TLS certificate, and it MUST NOT include IP addresses. A port MAY be included and the colon MUST be percent encoded to prevent a conflict with paths. Directories and subdirectories MAY optionally be included, delimited by colons rather than slashes.
+
+twin-did = "did:twin:" twinID
+twin-did = "did:twin:" twinID * (":" path)
+
+> EXAMPLE: Example Twin Method DIDs
+> did:web:123
+> did:twin:123:doc:<mydoc.json>
 
 ## DID method operations
 
 ### Create (Register)
 
+Creating a DID is done by:
 
+Applying at a twin for use of the linked IPv6 address as registered on TFChain and storing the location in the digital vault linked to the IPv6 vault address, creating the DID document JSON-LD file including a suitable keypair, and storing the did.json file under the TwinID vault address, or under the specified path if many DIDs will be resolved in this domain.
+For example, for the twinID 123, the did.json will be available under the following URL:
+
+EXAMPLE: Creating the DID
+did:twin:123
+ -> http://[1080:0:0:0:8:800:200C:417A]/did.json
 
 ### Read (Resolve)
 
