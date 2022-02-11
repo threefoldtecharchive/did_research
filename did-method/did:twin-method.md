@@ -1,5 +1,9 @@
 # Introduction
 
+Both DIDs and Verfiable Credentials often refer to personal information, which needs to remain available 24/7 to third parties that have the owner's consent to view the information. Nevertheless, for reasons of privacy regulations (GDPR, ...), storing personal information on a public DLT is not acceptable, nor is IPFS as the owner has no control over the location where his data is hosted. 
+This method is developed to set up a DID requiring personalized information to be stored securely on decentralized cloud infrastructure, and securely stored using Quantum-Safe Storage. Quantum-safe storage intelligently splits up data over different storage devices (through encryption plus stored in parts in a descriptive way). 
+The result is a DID or VC with a public end on blockchain infrastructure, and pointing, through an IPv6 address over the [Planetary Network] to a private location under the owner's control.
+
 ## Preface
 
 ## Conformance
@@ -52,6 +56,9 @@ twin-did = "did:twin:" twinID * (":" path)
 Creating a DID is done by:
 
 Applying at a twin for use of the linked IPv6 address as registered on TFChain and storing the location in the digital vault linked to the IPv6 vault address, creating the DID document JSON-LD file including a suitable keypair, and storing the did.json file under the TwinID vault address, or under the specified path if many DIDs will be resolved in this domain.
+
+![](twinID.png)
+
 For example, for the twinID 193 on TFChain testnet, the did.json will be available under the following URL:
 
 EXAMPLE: Creating the DID
