@@ -15,9 +15,9 @@ The result is a DID or VC with a public end on blockchain infrastructure, and po
   "@context": "https://www.w3.org/ns/did/v1",
   "id": "did:twin:tfchain-testnet:193",
   "verificationMethod": [{
-     "id": "did:twin:123#controller",
+     "id": "did:twin:193#controller",
      "type": "Secp256k1VerificationKey2018",
-     "controller": "did:twin:201:be1b:49ff:b6bc:a715:5af:6e5a:6fd3",
+     "controller": "did:twin:123",
      "SubstrateAddress": "0xb9c5714089478a327f09197987f16f9e5d936e8a"
   }],
   "authentication": [
@@ -118,6 +118,64 @@ The twin ID as registered on TFChain:
         "updatedAt": "2021-10-27T13:14:48.000Z"
       }
 ``` 
+
+``` 
+"credential": [{
+    // specify the identifier for the credential
+    "id": "did:twin:123#crdential-1",
+    // the credential types, which declare what data to expect in the credential
+    "type": ["SelfProclaimedCredential", "BasicProfileCredential"],
+    // when the credential was issued
+    "issuanceDate": "2022-01-01T03:20:18Z",
+    "ip": "123#credential-1"
+      // assertion about the subject of the credential
+    },
+    "proof": {
+      // the cryptographic signature suite that was used to generate the signature
+      "type": "ECDSAsecp256r1",
+      // the twin identifier that created the signature
+      "verificationMethod": "did:twin:193",
+      "signature": "zYx8XNi1..Cky6Ed="
+    }
+  }, {
+    // specify the identifier for the credential
+    "id": "did:twin:123#crdential-2",
+    // the credential types, which declare what data to expect in the credential
+    "type": ["CredentialType1", "CredentialType2"],
+    // the twin that issued the credential
+    "issuer": "did:twin:193",
+    // when the credential was issued
+    "issuanceDate": "2022-01-05T05:24:18Z",
+    // when the credential will expire
+    "expirationDate": "2024-01-05T23:59:59Z",
+    // claims about the subject of the credential
+    "ip": "123#credential-2"
+    },
+    // digital proof that makes the credential tamper-evident
+    "proof": {
+      // the cryptographic signature suite that was used to generate the signature
+      "type": "ECDSAsecp256r1",
+      // the public key identifier that created the signature
+      "verificationMethod": "did:twin:iY3PF8u1bYMujq6Z4bk2iAnmRFyD1cqbSw#sign-key",
+      // the digital signature value
+      "signature": "XovEzl0...W3JT24="
+    }
+  }],
+
+  "service": [{
+    "id": "#openid",
+    "type": "OpenIdConnectVersion1.0Service",
+    "serviceEndpoint": "twin123#ip-service-openid"
+  }, {
+    "id": "#vcr",
+    "type": "CredentialRepositoryService",
+    "serviceEndpoint": "twin123#ip-service-vcr"
+  }],
+
+  "expires": "2024-02-14T23:59:59Z"
+}
+
+```
 
 This DID document contains a public accountID by default. 
 
