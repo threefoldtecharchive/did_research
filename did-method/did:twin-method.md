@@ -122,7 +122,7 @@ The twin ID as registered on TFChain:
 ``` 
 "credential": [{
     // specify the identifier for the credential
-    "id": "did:twin:123#crdential-1",
+    "id": "did:twin:123#credential-1",
     // the credential types, which declare what data to expect in the credential
     "type": ["SelfProclaimedCredential", "BasicProfileCredential"],
     // when the credential was issued
@@ -139,7 +139,7 @@ The twin ID as registered on TFChain:
     }
   }, {
     // specify the identifier for the credential
-    "id": "did:twin:123#crdential-2",
+    "id": "did:twin:123#credential-2",
     // the credential types, which declare what data to expect in the credential
     "type": ["CredentialType1", "CredentialType2"],
     // the twin that issued the credential
